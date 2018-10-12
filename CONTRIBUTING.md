@@ -1,14 +1,15 @@
 Git workflow for contributions
 ==============================
 
+This document applies both to projects hosted on the public [GitHub](https://www.github.com) and on the BTC-private [BitBucket](https://bitbucket.e-konzern.de).
+
+It uses command-line git commands. These can probably also be done with most Git UI tools, but the mapping is beyond the scope of this document. Please consult the documentation of your Git UI tool.
+
 In principle, the [forking workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow) should be used. 
-However, there are currently some obstacles to this:
-- There are integration tests that should be run before merging a branch. Since the dependencies of these integration tests
-  are non-public for now, the artifacts must be deployed from the branch build so that the integration tests can access them.
-  This works easily only from the upstream repository.
+However, there are currently some obstacles to this with some CI processes.
 
 Therefore, for now, you should create feature branches in the upstream repository, but treat them as if they were branches in a fork. 
-To mark them as yours, start the branch name with your GitHub user name.
+To mark them as yours, start the branch name with your (GitHub/Bitbucket) user name.
 
 The following examples assume the remote name for the upstream repo is `upstream` and your GitHub user name is `myname`.
 
@@ -50,17 +51,22 @@ Generally, the status checks must be successful for a PR to be merged, i.e.
 
 In addition, 
 * no merge or fixup commits must be contained in the branch,
-* the external [integration tests](https://ci.bop-dev.de/job/cab/job/BF/job/serviceidl-integrationtests/job/master/) must run successfully.
+* project-specific additional requirements might be in place.
 
 ### Compatibility
 
-Changes must generally be backwards-compatible.
+In general, the ideas of [Semantic Versioning](https://semver.org) are followed, i.e.
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+> * MAJOR version when you make incompatible API changes,
+> * MINOR version when you add functionality in a backwards-compatible manner, and
+> * PATCH version when you make backwards-compatible bug fixes.
+However, they are enforced in different strictness, e.g. to allow easier maintenance of immature release units (often, but not always, denoted by the major version 0). Where in doubt, please contact the maintainer of the respective release unit.
 
 Features that should be removed must be declared as deprecated first. They can only be removed in the next major revision, and only if there are no substantial objections to removal.
 
 ### Scope of a PR
 
-The scope of a PR may vary dramatically. A small PR might contain a single fix for a spelling error. A large PR might contribute support for a new target language.
+The scope of a PR may vary dramatically. A small PR might contain a single fix for a spelling error. A large PR might contribute a major new feature involving changes to almost all modules.
 
 While in principle, a PR may combine unrelated changes as long as the conventions for each individual commit are upheld, it is usually not advisable to make a PR unnecessarily large. This makes it harder to review, and may prolong the time the PR is not ready for merge, require repeated rebasing, and thus unnecessary work.
 
@@ -84,19 +90,24 @@ The changes in a PR should be covered by tests. In case of an internal refactori
 
 ### Formatting
 
-Ensure proper formatting of all files. For Java and Xtend, use the Eclipse formatter.
+Ensure proper formatting of all files.
 
-Use the following workspace settings for the Java formatter, which are used by the Xtend formatter:
-* Tab policy: Spaces only
-* Indentation size: 4
+For C++:
+* Use clang-format. All master versions of all community release units include a .clang-format configuration file, which is provided by the conan conventions package.
 
-Unfortunately, they cannot be set in the project settings as of Xtend 2.14 (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=405956).
+For Java and Xtend:
+* Use the Eclipse formatter.
+* Use the following workspace settings for the Java formatter, which are used by the Xtend formatter:
+  * Tab policy: Spaces only
+  * Indentation size: 4
+* Unfortunately, these settings cannot be set in the project settings as of Xtend 2.14 (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=405956).
+* Currently, this is not automatically checked and it is hard to check this manually, so please handle this responsibly.
 
-Currently, this is not automatically checked and it is hard to check this manually, so please handle this responsibly.
+### Code and design guidelines
 
-### Xtend code style
+The code and design guidelines applicable for all community projects can be found under http://wiki.e-konzern.de/display/BTCCABCOM/Conventions apply (not available publicly at the time of writing).
 
-In general, all conventions under http://wiki.e-konzern.de/display/BTCCABCOM/Conventions apply (not available publicly at the time of writing).
+#### Xtend code style
 
 There are some specific conventions regarding Xtend code style:
 * Access and storage class modifiers for members
