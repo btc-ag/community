@@ -9,7 +9,7 @@ In principle, the [forking workflow](https://www.atlassian.com/git/tutorials/com
 However, there are currently some obstacles to this with some CI processes.
 
 Therefore, for now, you should create feature branches in the upstream repository, but treat them as if they were branches in a fork. 
-To mark them as yours, start the branch name with your (GitHub/Bitbucket) user name.
+To mark them as yours, start the branch name with your (GitHub/Bitbucket) user name. This requires write access to the respective repository. If you do not have it, please contact the respective maintainer.
 
 The following examples assume the remote name for the upstream repo is `upstream` and your GitHub user name is `myname`.
 
