@@ -11,12 +11,13 @@ However, there are currently some obstacles to this with some CI processes.
 Therefore, for now, you should create feature branches in the upstream repository, but treat them as if they were branches in a fork. 
 To mark them as yours, start the branch name with your (GitHub/Bitbucket) user name. This requires write access to the respective repository. If you do not have it, please contact the respective maintainer.
 
-The following examples assume the remote name for the upstream repo is `upstream` and your GitHub user name is `myname`.
+The following examples assume the remote name for the upstream repo is `origin` (which is the default git remote name) and your GitHub user name is `myname`.
 
 To start a new branch, use the following commands:
 ```
-git checkout -b myname-add-cool-new-feature upstream/master
-git push -u upstream myname-add-cool-new-feature
+git checkout origin/master
+git checkout -b myname-add-cool-new-feature origin/master
+git push -u origin myname-add-cool-new-feature
 ```
 
 Work in your feature branch
@@ -26,14 +27,14 @@ While you work in your feature branch, you may in principle do whatever you want
 
 For example, you can use `git commit --fixup <SHA1>` to mark changes as a fixup to any previous commit with the given hash, but keeping them as a separate commit for the moment (which you can easily revert again). When you are satisfied with your feature branch, you can semi-automatically squash these fixup commits with their respective base commits by using the following commands:
 ```
-git rebase -i upstream/master # this opens an editor, where the fixups are automatically rearranged
+git rebase -i origin/master # this opens an editor, where the fixups are automatically rearranged
 git push --force-with-lease
 ```
 
-To update your branch when the upstream master has changed, use the following commands: 
+To update your branch when the origin master has changed, use the following commands: 
 ```
-git fetch upstream
-git rebase upstream/master # this may require resolving conflicts
+git fetch origin
+git rebase origin/master # this may require resolving conflicts
 git push --force-with-lease
 ```
 You should do this regularly to avoid conflicts to accumulate, which makes them harder to resolve.
